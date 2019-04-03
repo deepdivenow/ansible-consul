@@ -1,0 +1,16 @@
+---
+# defaults file for ansible-consul
+consul_version: 1.4.3
+consul_version_target: "Consul v{{ consul_version }}"
+consul_link: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip"
+consul_user: consul
+consul_bin_dir: /usr/bin
+consul_config_dir: /etc/consul.d
+consul_data_dir:   /var/lib/consul
+consul_encrypt: "iHrjBad/vhOq8m6alZG3pw=="
+consul_datacenter: test
+consul_server: false
+consul_bootstrap: 2
+consul_log_level: info
+consul_servers: '{{ ansible_play_hosts}}'
+consul_advertise_addr: "{{ ansible_default_ipv4.address }}"

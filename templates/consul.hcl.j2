@@ -1,0 +1,13 @@
+{
+    "server": {{ consul_server|tojson }},
+{% if consul_server %}
+    "bootstrap_expect": {{ consul_bootstrap|tojson }},
+{% endif %}
+    "datacenter" : "{{ consul_datacenter }}",
+    "node_name" : "{{ inventory_hostname_short }}",
+    "data_dir": "{{ consul_data_dir }}",
+    "encrypt": "{{ consul_encrypt }}",
+    "log_level": "{{ consul_log_level }}",
+    "start_join": {{ consul_servers | tojson }},
+    "advertise_addr": "{{ consul_advertise_addr }}"
+}

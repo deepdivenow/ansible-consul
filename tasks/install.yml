@@ -1,0 +1,39 @@
+---
+- name: Check consul user
+  user: name="{{ consul_user }}" home="{{ consul_data_dir }}"
+
+- name: Check consul dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+    owner: "{{ consul_user }}"
+  with_items:
+  - "{{ consul_config_dir }}"
+  - "{{ consul_data_dir }}"
+
+- name: Register the current consul version (if any)
+  command: bash -c "{{ consul_bin_dir }}/consul version | head -1"
+  ignore_errors: yes
+  register: consul_version_check
+  changed_when: false
+
+- block:
+    - name: download {{ consul_link }}
+      get_url:
+        url: "{{ consul_link }}"
+        dest: "/tmp/{{ consul_link|basename }}"
+
+    - name: install consul
+      unarchive:
+        copy: no
+        src: "/tmp/{{ consul_link|basename }}"
+        dest: "{{ consul_bin_dir }}"
+#        extra_opts: "--strip-components=1"
+
+    - name: Remove archive {{ consul_link|basename }}
+      file:
+        path: "/tmp/{{ consul_link|basename }}"
+        state: absent
+
+  when: consul_version_check is failed or consul_version_check.stdout != consul_version_target

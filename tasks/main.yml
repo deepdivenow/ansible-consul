@@ -1,0 +1,11 @@
+---
+# tasks file for ansible-consul
+
+- import_tasks: install.yml
+  tags: [consul, consul_install]
+
+- import_tasks: configure.yml
+  tags: [consul, consul_configure]
+
+- import_tasks: service.yml
+  tags: [consul, consul_service]

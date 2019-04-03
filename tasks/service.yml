@@ -1,0 +1,14 @@
+---
+- name: Set service file
+  template:
+    src: consul.service.j2
+    dest: /etc/systemd/system/consul.service
+  notify: restart consul
+
+- meta: flush_handlers
+
+- name: Start & Enable consul
+  service:
+    name: consul
+    state: started
+    enabled: True
